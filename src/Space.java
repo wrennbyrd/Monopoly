@@ -6,10 +6,12 @@ public class Space {
     int spaceCost;
 //what player currently owns the space
 
-    Player owner;
+    String owner;
 
     int rent;
 
-
+    public Space() {
+        owner = "";
+    }
 
 }

@@ -4,6 +4,65 @@ public class Application {
 
     public static void main(String[] args) {
 
+       ArrayList<Space> spaces = generatesSpaces();
+
+
+        Player playerOne= new Player();
+
+        playerOne.name = "Courtnee";
+        playerOne.currentSpaceIndex = 0;
+        playerOne.money = 1000;
+
+        while(playerOne.money > 0){
+
+            int nextSpaceToMoveTo = roll(playerOne.currentSpaceIndex);
+            playerOne.currentSpaceIndex = nextSpaceToMoveTo;
+
+
+            Space currentSpace = spaces.get(playerOne.currentSpaceIndex);
+
+            buySpace(playerOne, currentSpace);
+        }
+
+
+    }
+
+    static void buySpace(Player player, Space currentSpace) {
+
+        if (currentSpace.owner == ""){
+
+            if (player.money > currentSpace.spaceCost) {
+                player.money = player.money - currentSpace.spaceCost;
+                currentSpace.owner = player.name;
+                System.out.println(player.name + " bought " + currentSpace.name + " and has " + player.money + " left");
+            }
+
+
+        }  else {
+            player.money = player.money - currentSpace.rent;
+
+            System.out.println("Pay Rent " + currentSpace.rent);
+        }
+
+    }
+
+
+    static int roll(int currentSpace){
+        int rollValue = (int)(3.0 * Math.random()+ 1);
+
+        int newSpace = currentSpace + rollValue;
+
+        //wraping
+        if (newSpace > 5) {
+            newSpace = newSpace - 5;
+        }
+
+        return newSpace;
+    }
+
+    public static ArrayList<Space> generatesSpaces(){
+
+
         Space go = new Space();
         go.name = "Go";
         go.spaceCost = 0;
@@ -42,44 +101,8 @@ public class Application {
         spaces.add(parkPlace);
         spaces.add(boardWalk);
 
-        Player playerOne= new Player();
+        return spaces;
 
-        playerOne.name = "Courtnee";
-        playerOne.currentSpace = 0;
-        playerOne.money = 5000;
-
-        while(playerOne.money > 0){
-
-            playerOne.currentSpace = roll(playerOne.currentSpace);
-
-            Space currentSpace = spaces.get(playerOne.currentSpace);
-
-            buySpace(playerOne, currentSpace);
-        }
-
-
-    }
-
-    //todo the player shouldn't be able to buy a space someone already owns
-    static void buySpace(Player player, Space currentSpace) {
-        player.money = player.money - currentSpace.spaceCost;
-
-        currentSpace.owner = player;
-        System.out.println(player.name + " bought " + currentSpace.name + " and has " + player.money + " left");
-    }
-
-
-    static int roll (int currentSpace){
-        int rollValue = (int)(3.0 * Math.random()+ 1);
-
-        int newSpace = currentSpace + rollValue;
-
-        //wraping
-        if (newSpace > 5) {
-            newSpace = newSpace - 5;
-        }
-
-        return newSpace;
     }
 
 }
