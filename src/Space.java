@@ -2,6 +2,8 @@
 public class Space {
 
     String name;
+    boolean isPurchasable;
+
 
     int spaceCost;
 //what player currently owns the space
@@ -12,6 +14,8 @@ public class Space {
 
     public Space() {
         owner = "";
+        isPurchasable = true;
+
     }
 
 }
