@@ -8,7 +8,10 @@ public class Player {
 
     int currentSpaceIndex;
 
-
+    Player(){
+        currentSpaceIndex = 0;
+        money = 4000;
+    }
 
 
 }

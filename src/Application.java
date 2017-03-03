@@ -7,42 +7,49 @@ public class Application {
 
         int turnIndex = 0;
 
-        ArrayList<Space> spaces = buildingSpacesOnBoard();
-
+        ArrayList<SpaceInterface> spaces = buildingSpacesOnBoard();
+        LuxuryTaxSpace luxuryTax = (LuxuryTaxSpace) spaces.get(6);
+        int luxuryTaxBalance = luxuryTax.charge;
 
         Player playerOne= new Player();
 
         playerOne.name = "Courtnee";
-        playerOne.currentSpaceIndex = 0;
-        playerOne.money = 1000;
 
-        while(playerOne.money > 0 && turnIndex < 50) {
-
-            int nextSpaceToMoveTo = roll(playerOne.currentSpaceIndex, playerOne);
-            playerOne.currentSpaceIndex = nextSpaceToMoveTo;
+        FreeParkingSpace freeParkingSpace = (FreeParkingSpace) spaces.get(3);
 
 
-            Space currentSpace = spaces.get(playerOne.currentSpaceIndex);
+        while(playerOne.money > 0 && turnIndex < 100) {
 
-            buySpace(playerOne, currentSpace);
+
+            roll(playerOne, luxuryTaxBalance, freeParkingSpace);
+
+            SpaceInterface currentSpace = spaces.get(playerOne.currentSpaceIndex);
+
+            //determine if the space is a regular purchaseable space
+            if (currentSpace.getIsPurchasable()) {
+                Space currentRegularSpace = (Space)currentSpace;
+                buySpace(playerOne, currentRegularSpace);
+            }
 
             turnIndex++;
         }
-
 
     }
 
     static void buySpace(Player player, Space currentSpace) {
 
+        //check if the space has already been purchased
         if (currentSpace.owner == ""){
 
-            if (player.money > currentSpace.spaceCost && currentSpace.isPurchasable) {
+            //purchasing the space
+            if (player.money > currentSpace.spaceCost) {
                 player.money = player.money - currentSpace.spaceCost;
                 currentSpace.owner = player.name;
                 System.out.println(player.name + " bought " + currentSpace.name + " and has " + player.money + " left");
             }
 
-
+        //paying rent to the owner
+            //todo pay rent to another player not self
         }  else {
             player.money = player.money - currentSpace.rent;
 
@@ -51,7 +58,7 @@ public class Application {
 
     }
 
-        static ArrayList<Space> buildingSpacesOnBoard(){
+        static ArrayList<SpaceInterface> buildingSpacesOnBoard(){
 
             Space go = new Space();
             go.name = "Go";
@@ -67,9 +74,8 @@ public class Application {
             virginia.spaceCost = 250;
             virginia.rent = 50;
 
-            Space freeParking = new Space();
+            FreeParkingSpace freeParking = new FreeParkingSpace();
             freeParking.name = "Free Parking";
-            freeParking.isPurchasable = false;
 
 
             Space maryland = new Space();
@@ -82,9 +88,9 @@ public class Application {
             parkPlace.spaceCost = 500;
             parkPlace.rent = 100;
 
-            Space luxuryTax = new Space();
+            LuxuryTaxSpace luxuryTax = new LuxuryTaxSpace();
             luxuryTax.name = "LuxuryTax ";
-            luxuryTax.isPurchasable = false;
+            luxuryTax.charge = 50;
 
 
             Space boardWalk = new Space ();
@@ -93,7 +99,7 @@ public class Application {
             boardWalk.rent = 150;
 
 
-            ArrayList<Space> spaces = new ArrayList();
+            ArrayList<SpaceInterface> spaces = new ArrayList();
             spaces.add(go);
             spaces.add(stCharlesPlace);
             spaces.add(virginia);
@@ -107,28 +113,31 @@ public class Application {
 
         }
 
-
-    static int roll(int currentSpace, Player currentPlayer){
-
-
+    //todo add a check that the player landed on free parking and earned the amount in the balance
+    static void roll(Player currentPlayer, int balance, FreeParkingSpace freeparking){
 
         int rollValue = (int)(3.0 * Math.random()+ 1);
 
-        int newSpace = currentSpace + rollValue;
+        int newSpace = currentPlayer.currentSpaceIndex + rollValue;
 
-        //wraping
         if (newSpace > 7) {
-            newSpace = newSpace - 5;
-            //start on or before 0  and ended after 0
-            if (currentSpace >= 5 && newSpace >= 0) {
+            newSpace = newSpace - 7;
+
+            if (currentPlayer.currentSpaceIndex >= 5 && newSpace >= 0) {
                 currentPlayer.money = currentPlayer.money + 200;
 
-                System.out.println( currentPlayer.name + "passed Go. You get $200");
+                System.out.println( currentPlayer.name + " passed Go. You get $200");
 
             }
         }
+        if (newSpace == 6){
 
-        return newSpace;
+            currentPlayer.money = currentPlayer.money - balance;
+            freeparking.balance = freeparking.balance + balance;
+            System.out.println(currentPlayer.name + " landed on luxury tax and paid $" + balance);
+        }
+
+        currentPlayer.currentSpaceIndex = newSpace;
     }
 
 

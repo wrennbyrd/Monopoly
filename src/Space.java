@@ -1,21 +1,19 @@
 
-public class Space {
+public class Space implements SpaceInterface {
 
     String name;
     boolean isPurchasable;
-
-
     int spaceCost;
-//what player currently owns the space
-
     String owner;
-
     int rent;
 
     public Space() {
         owner = "";
         isPurchasable = true;
+    }
 
+    public boolean getIsPurchasable(){
+        return isPurchasable;
     }
 
 }
