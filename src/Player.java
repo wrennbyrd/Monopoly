@@ -13,5 +13,7 @@ public class Player {
         money = 4000;
     }
 
-
+    public String getName() {
+        return name;
+    }
 }

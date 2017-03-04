@@ -4,11 +4,13 @@ public class Space implements SpaceInterface {
     String name;
     boolean isPurchasable;
     int spaceCost;
-    String owner;
+    Player owner;
     int rent;
+    boolean ismonopoly = false;
+
+
 
     public Space() {
-        owner = "";
         isPurchasable = true;
     }
 
@@ -16,4 +18,18 @@ public class Space implements SpaceInterface {
         return isPurchasable;
     }
 
+    public void addRentMoneyToOwnerOfSpace(){
+        owner.money = owner.money + rent;
+    }
+
+    public String getOwnerName() {
+        return owner.getName();
+    }
+    public void setOwner(Player player){
+        owner = player;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

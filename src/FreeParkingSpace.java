@@ -14,5 +14,9 @@ public class FreeParkingSpace implements SpaceInterface {
     public boolean getIsPurchasable(){
         return isPurchasable;
     }
+
+    public String getName(){
+        return name;
+    }
 }
 

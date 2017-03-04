@@ -13,5 +13,8 @@ public class LuxuryTaxSpace implements SpaceInterface {
         return isPurchasable;
     }
 
+    public String getName() {
+        return name;
+    }
 
 }
