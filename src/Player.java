@@ -10,7 +10,7 @@ public class Player {
 
     Player(){
         currentSpaceIndex = 0;
-        money = 4000;
+        money = 800;
     }
 
     public String getName() {

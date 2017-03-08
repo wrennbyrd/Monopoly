@@ -1,19 +1,23 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class Setup {
 
 
     HashMap<String, Player> setUpPlayers (){
 
-        Player currentPlayer;
-        Player nextPlayer;
+        Scanner playerName = new Scanner(System.in);
+        System.out.println("Please enter your name player one");
+        String name = playerName.next();
+        System.out.println("Please enter your name player two");
+        String name2 = playerName.next();
 
         Player playerOne = new Player();
         Player playerTwo= new Player();
 
-        playerOne.name = "Courtnee";
-        playerTwo.name = "Mike";
+        playerOne.name = name;
+        playerTwo.name = name2;
 
         HashMap<String, Player> listOfPlayers = new HashMap<>();
         listOfPlayers.put("PlayerOne", playerOne);
